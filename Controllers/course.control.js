@@ -32,12 +32,11 @@ module.exports.postACourse = async (req, res) => {
         let data = new Object({ ...(req.body), ...(uploadImage(req?.files)) })
         if (data.courseLink) {
             data.courseLink = data.courseLink.split(',')
-        }    if (data.tags) {
+        } if (data.tags) {
             data.tags = data.tags.split(',')
         }
-        console.log(data)
-        // const result = await COURSE.create(data)
-        // res.status(200).send(result)
+        const result = await COURSE.create(data)
+        res.status(200).send(result)
     } catch (error) {
         console.log(error)
     }
