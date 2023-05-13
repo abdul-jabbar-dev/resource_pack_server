@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose;
+const mongoose = require('mongoose') 
 const courseSchema = new mongoose.Schema({
 
     name: {
@@ -24,20 +23,26 @@ const courseSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: [true, 'Description field required '],
-        maxlength: [200, 'Maximum length 200 ']
+        required: [true, 'Description field required ']
     },
     requirements: {
         type: String,
-        required: [true, 'Description field required '],
-        maxlength: [200, 'Maximum length 200 ']
+        required: [true, 'Description field required ']
     },
+    courseMainLink: String,
+    courseLink: [String], 
+    tags: [String], 
+    topics: String,
     thumbnail: {
-        type: String,
-        maxlength: [200, 'Maximum length 200 ']
+        type: String
     },
     create_at: {
         type: String
+    },
+    status:{
+        type:String,
+        enum:['Active','Deactive'],
+        default:"Active"
     }
 }, {
     timestamps: true
