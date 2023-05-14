@@ -1,7 +1,7 @@
 const express = require('express')
 
  const { upload } = require('../Config/multer')
-const { postACourse, deleteACourse, getAllCourse ,getACourse} = require('../Controllers/course.control')
+const { postACourse, deleteACourse, getAllCourse ,getACourse, updateACourse} = require('../Controllers/course.control')
 const CourseRoute = express.Router()
 
 CourseRoute
@@ -9,7 +9,7 @@ CourseRoute
     .get('/:id', getACourse)
     .post('/', upload('course').any(), postACourse)
     .delete('/:courseId',deleteACourse)
-    // .put('/:serviceId', upload('service').any(),updateAService)
+    .put('/:courseId', upload('service').any(),updateACourse)
 
 
 // ServiceRoute

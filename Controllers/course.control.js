@@ -20,7 +20,25 @@ module.exports.getACourse = async (req, res) => {
 
 module.exports.updateACourse = async (req, res) => {
     try {
-        const result = await COURSE.find()
+        const ext = await COURSE.findById(req.params.courseId)
+        let data;
+        if (req.files) {
+            data = new Object({ ...(req.body), ...(uploadImage(req?.files)) })
+        } else {
+            data = new Object({ ...(req.body) })
+        }
+        if (data.courseLink) {
+            data.courseLink = data.courseLink.split(',')
+        }
+        if (data.tags) {
+            data.tags = data.tags.split(',')
+        }
+        console.log(data)
+        const result = await COURSE.findByIdAndUpdate(ext._id, data)
+
+        if (data.thumbnail !== ext.thumbnail) {
+            deleteImage(ext.thumbnail)
+        }
         res.status(200).send(result)
     } catch (error) {
         console.log(error)
@@ -35,8 +53,9 @@ module.exports.postACourse = async (req, res) => {
         } if (data.tags) {
             data.tags = data.tags.split(',')
         }
-        const result = await COURSE.create(data)
-        res.status(200).send(result)
+        console.log(data)
+        // const result = await COURSE.create(data)
+        // res.status(200).send(result)
     } catch (error) {
         console.log(error)
     }
