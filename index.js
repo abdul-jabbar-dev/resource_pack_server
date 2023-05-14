@@ -18,17 +18,20 @@ app.use(bodyParser.text({ type: '/' }));
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
- 
-try {
-    await mongoose.connect(process.env.DB_URL);
-    console.log('db is connetct')
-    app.use('/services', ServiceRoute)
-    app.use('/users', UserRoute)
-    // app.use('/blogs', BlogRoute)
-    app.use('/course', CourseRoute)
-} catch (error) {
-    console.log(error);
+async function run() {
+
+    try {
+        await mongoose.connect(process.env.DB_URL);
+        console.log('db is connetct')
+        app.use('/services', ServiceRoute)
+        app.use('/users', UserRoute)
+        // app.use('/blogs', BlogRoute)
+        app.use('/course', CourseRoute)
+    } catch (error) {
+        console.log(error);
+    }
 }
+run()
 
 
 app.get('/', (req, res) => {
