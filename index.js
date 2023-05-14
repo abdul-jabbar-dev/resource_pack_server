@@ -17,16 +17,19 @@ app.use(express.json())
 app.use(bodyParser.text({ type: '/' }));
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
-mongoose.connect(process.env.DB_URL).then(
-    (res) => {
-        console.log('db is connetct')
-        app.use('/services', ServiceRoute)
-        app.use('/users', UserRoute)
-        // app.use('/blogs', BlogRoute)
-        app.use('/course', CourseRoute)
 
-    }
-).catch(err => console.dir(err))
+ 
+try {
+    await mongoose.connect(process.env.DB_URL);
+    console.log('db is connetct')
+    app.use('/services', ServiceRoute)
+    app.use('/users', UserRoute)
+    // app.use('/blogs', BlogRoute)
+    app.use('/course', CourseRoute)
+} catch (error) {
+    console.log(error);
+}
+
 
 app.get('/', (req, res) => {
     crypto.randomBytes(2, function (err, buffer) {
