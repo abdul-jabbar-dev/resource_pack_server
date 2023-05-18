@@ -3,8 +3,15 @@ const { uploadImage, deleteImage } = require("../util/uploadMedia")
 
 module.exports.getAllCourse = async (req, res) => {
     try {
-        const result = await COURSE.find()
-        res.status(200).send(result)
+        const query = req.query
+        const fields = query.fields?.split(',')?.join(" ")
+        const sort = query.sort?.split(',')?.join(" ")
+        let page = (query.page) * 1 || 1
+        let limit = (query.limit) * 1 || 5
+        const count = await COURSE.find({}).count()
+        const result = await COURSE.find({}, fields).sort(sort).skip((page - 1) * limit).limit(limit)
+
+        res.status(200).send({ total: count, data: result })
     } catch (error) {
         console.log(error)
     }
@@ -49,10 +56,10 @@ module.exports.postACourse = async (req, res) => {
     try {
         let data = new Object({ ...(req.body), ...(uploadImage(req?.files)) })
         if (data.courseLink) {
-            data.courseLink = (data.courseLink.split(',')).filter(li => li.length>1)
+            data.courseLink = (data.courseLink.split(',')).filter(li => li.length > 1)
         } if (data.tags) {
             data.tags = (data.tags.split(',')).filter(t => t.length > 1)
-        } 
+        }
         const result = await COURSE.create(data)
         res.status(200).send(result)
     } catch (error) {

@@ -21,7 +21,8 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 async function run() {
 
     try {
-        await mongoose.connect(process.env.DB_URL);
+        //mongoconnection abdul.jabbar.dev@gmail.com resourchHack->(mongoId:abduljabbardev pass:resourceHack)
+        await mongoose.connect("mongodb+srv://abduljabbardev:resourceHack@cluster0.dlcc2lp.mongodb.net/launch");
         console.log('db is connetct')
         app.use('/services', ServiceRoute)
         app.use('/users', UserRoute)

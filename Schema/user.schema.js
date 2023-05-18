@@ -82,7 +82,7 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 userSchema.methods.passwordHashed = function (newPassword = this.password) {
-    this.password = bcrept.hashSync(newPassword, parseInt(process.env.SALT))
+    this.password = bcrept.hashSync(newPassword, 15)
     return this.password
 }
 
